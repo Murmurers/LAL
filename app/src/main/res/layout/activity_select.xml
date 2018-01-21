@@ -4,23 +4,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.test.li182.my_game.SelectActivity"
-    android:background="@color/colorPrimary"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    >
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifbg"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg">
 
+    </pl.droidsonroids.gif.GifImageView>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    >
     <Button
         android:id="@+id/button_pk"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_width="380px"
+        android:layout_height="180px"
         android:layout_marginTop="150dp"
         android:layout_gravity="center"
-        android:text="PK模式" />
+        android:background="@drawable/playbt"
+        />
 
     <Button
         android:id="@+id/button_union"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_width="654px"
+        android:layout_height="144px"
         android:layout_marginTop="30dp"
         android:layout_gravity="center"
-        android:text="多人模式" />
+        android:background="@drawable/multiplayer"
+        />
+</LinearLayout>
 
+    </FrameLayout>
 </LinearLayout>
