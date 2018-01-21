@@ -3,6 +3,7 @@ package com.test.li182.my_game;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -31,6 +32,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,6 +75,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         requestWindowFeature(Window.FEATURE_NO_TITLE);//隐藏标题栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);//隐藏状态栏
         setContentView(R.layout.activity_login);
+        StartDialog dialog = new StartDialog(this);
+        dialog.show();
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+            }
+        });
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -99,6 +108,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        Intent intent = new Intent(LoginActivity.this,StartMusicService.class);
+        startService(intent);
     }
 
     private void populateAutoComplete() {
@@ -354,6 +365,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
+
+    }
+    @Override
+    protected void onStop() {
+        // TODO Auto-generated method stub
+        Intent intent = new Intent(LoginActivity.this,StartMusicService.class);
+        stopService(intent);
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Intent intent = new Intent(LoginActivity.this,StartMusicService.class);
+        stopService(intent);
+        super.onDestroy();
     }
 }
 

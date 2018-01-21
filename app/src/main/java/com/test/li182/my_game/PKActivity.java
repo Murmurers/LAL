@@ -1,7 +1,10 @@
 package com.test.li182.my_game;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -9,6 +12,7 @@ import android.hardware.SensorManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -70,6 +74,17 @@ public class PKActivity extends AppCompatActivity {
             }
         }
     };
+    private ServiceConnection conn =new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +92,8 @@ public class PKActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);//隐藏标题栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);//隐藏状态栏
         setContentView(R.layout.activity_pk);
+        Intent intent = new Intent(PKActivity.this,BgmService.class);
+        bindService(intent,conn,Context.BIND_AUTO_CREATE);
         etTest = findViewById(R.id.et_test);
         Button btStart = (Button) findViewById(R.id.button_start);
         Button btAdd = (Button) findViewById(R.id.button_add);
@@ -257,5 +274,11 @@ public class PKActivity extends AppCompatActivity {
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         int ipAddress = wifiInfo.getIpAddress();
         return intToIp(ipAddress);
+    }
+
+    @Override
+    protected void onStop() {
+        unbindService(conn);
+        super.onStop();
     }
 }

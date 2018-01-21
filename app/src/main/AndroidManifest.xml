@@ -14,15 +14,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
         <activity android:name=".PKActivity" />
-        <activity android:name=".SelectActivity">
-
-        </activity>
+        <activity android:name=".SelectActivity" />
         <activity android:name=".UnionActivity" />
         <activity
             android:name=".LoginActivity"
@@ -33,6 +31,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".BgmService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote" />
+        <service
+            android:name=".StartMusicService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

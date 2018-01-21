@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifbg"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/startbg">
+
+    </pl.droidsonroids.gif.GifImageView>
+    <TextView
+        android:id="@+id/tv_time"
+        android:gravity="center"
+        android:layout_gravity="right"
+        android:background="@drawable/oval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3s"
+        android:layout_alignParentRight="true"
+        android:layout_margin="20dp"/>
+
+</FrameLayout>
