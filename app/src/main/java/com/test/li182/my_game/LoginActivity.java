@@ -6,6 +6,8 @@ import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +34,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +42,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -68,13 +73,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private ImageView tou;
+    private int touID;
+    private int tou_ID_value;
+    private String lujing;
+    private ResourcesUtils myres;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//隐藏标题栏
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);//隐藏状态栏
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //隐藏状态栏
+
         setContentView(R.layout.activity_login);
+        initeTou();
         StartDialog dialog = new StartDialog(this);
         dialog.show();
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -82,11 +95,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public void onDismiss(DialogInterface dialog) {
             }
         });
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
+
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -110,6 +125,31 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProgressView = findViewById(R.id.login_progress);
         Intent intent = new Intent(LoginActivity.this,StartMusicService.class);
         startService(intent);
+    }
+
+    protected void initeTou() {
+        tou=(ImageView)findViewById(R.id.img_upload_img);
+        Random rand = new Random();
+        int i = rand.nextInt(12);
+        touID=i;
+        Log.d("生成随机数",Integer.toString(touID));
+        switch (touID)
+        {
+            case 0:tou.setBackgroundResource(R.drawable.tou0);break;
+            case 1:tou.setBackgroundResource(R.drawable.tou1);break;
+            case 2:tou.setBackgroundResource(R.drawable.tou2);break;
+            case 3:tou.setBackgroundResource(R.drawable.tou3);break;
+            case 4:tou.setBackgroundResource(R.drawable.tou4);break;
+            case 5:tou.setBackgroundResource(R.drawable.tou5);break;
+            case 6:tou.setBackgroundResource(R.drawable.tou6);break;
+            case 7:tou.setBackgroundResource(R.drawable.tou7);break;
+            case 8:tou.setBackgroundResource(R.drawable.tou8);break;
+            case 9:tou.setBackgroundResource(R.drawable.tou9);break;
+            case 10:tou.setBackgroundResource(R.drawable.tou10);break;
+            case 11:tou.setBackgroundResource(R.drawable.tou11);break;
+            case 12:tou.setBackgroundResource(R.drawable.tou12);break;
+
+        }
     }
 
     private void populateAutoComplete() {

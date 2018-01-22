@@ -21,7 +21,7 @@ public class StartMusicService extends Service {
 
             public void onCompletion(MediaPlayer mp) {
                 // TODO Auto-generated method stub
-                // 循环播放
+                // 停止播放
                 try {
                     mp.stop();
                 } catch (IllegalStateException e) {
@@ -77,7 +77,6 @@ public class StartMusicService extends Service {
         // 服务停止时停止播放音乐并释放资源
         mp.stop();
         mp.release();
-
         super.onDestroy();
     }
 

@@ -5,7 +5,20 @@
     android:layout_height="match_parent"
     tools:context="com.test.li182.my_game.UnionActivity"
     android:background="@color/colorPrimary">
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/gifbg"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/multiplayerbg">
+        </pl.droidsonroids.gif.GifImageView>
 
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycleview"
         android:layout_above="@id/temp"
@@ -35,6 +48,8 @@
             android:layout_weight="1"
             android:text="加入房间" />
     </LinearLayout>
+</RelativeLayout>
+    </FrameLayout>
 
 
 </RelativeLayout>

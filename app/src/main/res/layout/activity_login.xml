@@ -36,20 +36,11 @@
 
         <ImageView
             android:id="@+id/img_upload_img"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/menu_item_theme"/>
-        <TextView
-            android:id="@+id/tx_upload_img"
-            android:layout_below="@id/img_upload_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="上传头像"
             android:layout_centerHorizontal="true"
-            android:textSize="15sp"
-            android:gravity="fill_vertical"
-            android:textColor="#fff"/>
+            android:layout_centerVertical="true"
+            />
     </RelativeLayout>
     <!-- Login progress -->
     <ProgressBar
