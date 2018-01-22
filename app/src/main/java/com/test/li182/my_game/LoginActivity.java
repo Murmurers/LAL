@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -70,14 +71,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     // UI references.
     private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
+    private EditText mNameView;
     private View mProgressView;
     private View mLoginFormView;
     private ImageView tou;
     private int touID;
-    private int tou_ID_value;
-    private String lujing;
-    private ResourcesUtils myres;
+
+    //玩家信息存取
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +89,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         //隐藏状态栏
 
         setContentView(R.layout.activity_login);
+        //获取只能被本应用程序读、写的SharedPreferences对象
+        preferences = getSharedPreferences("Userinfo",MODE_PRIVATE);
+        editor = preferences.edit();
+
+        //初始化头像
         initeTou();
         StartDialog dialog = new StartDialog(this);
         dialog.show();
@@ -99,19 +106,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
-
-        mPasswordView = (EditText) findViewById(R.id.password);
-
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
+        mNameView = (EditText) findViewById(R.id.name);
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
@@ -148,7 +143,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             case 10:tou.setBackgroundResource(R.drawable.tou10);break;
             case 11:tou.setBackgroundResource(R.drawable.tou11);break;
             case 12:tou.setBackgroundResource(R.drawable.tou12);break;
-
         }
     }
 
@@ -208,21 +202,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         // Reset errors.
         mEmailView.setError(null);
-        mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        String name = mNameView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
+
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
@@ -243,10 +232,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
+            editor.putInt("ID",touID);
+            editor.putString("Name",name);
+            Log.d("用户ID",Integer.toString(touID));
+            Log.d("用户名",name);
             Intent intent = new Intent(LoginActivity.this, SelectActivity.class);
             startActivity(intent);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
         }
     }
 
@@ -395,8 +386,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
             }
         }
 
