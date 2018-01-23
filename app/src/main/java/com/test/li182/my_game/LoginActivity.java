@@ -95,6 +95,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         //初始化头像
         initeTou();
+        tou.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initeTou();
+            }
+        });
+
         StartDialog dialog = new StartDialog(this);
         dialog.show();
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -238,6 +245,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Log.d("用户名",name);
             Intent intent = new Intent(LoginActivity.this, SelectActivity.class);
             startActivity(intent);
+            finish();
         }
     }
 
