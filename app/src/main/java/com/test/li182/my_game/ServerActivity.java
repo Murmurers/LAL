@@ -132,7 +132,7 @@ public class ServerActivity extends AppCompatActivity {
                         func_button.setBackgroundResource(R.drawable.creat_room);
                         func_button.setClickable(true);
                         clientAddress.clear();
-                        players.clear();
+
                     }
                     break;
                 case MSG_TEST:
@@ -190,6 +190,7 @@ public class ServerActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        players.clear();
         mAdapter = new MyAdapter(players);
         mRecyclerView = findViewById(R.id.rc_server);
         mRecyclerView.setLayoutManager(mLayoutManager);
