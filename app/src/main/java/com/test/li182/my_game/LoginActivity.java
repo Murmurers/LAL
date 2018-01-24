@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 initeTou();
             }
         });
-
+        //开始界面显示
         StartDialog dialog = new StartDialog(this);
         dialog.show();
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -243,6 +243,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             editor.putString("Name",name);
             Log.d("用户ID",Integer.toString(touID));
             Log.d("用户名",name);
+            editor.commit();
             Intent intent = new Intent(LoginActivity.this, SelectActivity.class);
             startActivity(intent);
             finish();

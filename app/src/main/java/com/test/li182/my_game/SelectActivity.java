@@ -1,7 +1,9 @@
 package com.test.li182.my_game;
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
@@ -32,13 +34,27 @@ public class SelectActivity extends AppCompatActivity {
             }
         });
 
-        buttonUnion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SelectActivity.this, UnionActivity.class);
-                startActivity(intent);
-            }
-        });
+       buttonUnion.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               new AlertDialog.Builder(SelectActivity.this).setTitle("请选择模式")
+                       .setPositiveButton("服务器", new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialogInterface, int i) {
+                               Intent intent = new Intent(SelectActivity.this, ServerActivity.class);
+                               startActivity(intent);
+                           }
+                       })
+                       .setNegativeButton("玩家", new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialogInterface, int i) {
+                               Intent intent = new Intent(SelectActivity.this, ClientActivity.class);
+                               startActivity(intent);
+                           }
+                       })
+                       .create().show();
+           }
+       });
     }
     @Override
     protected void onStop() {

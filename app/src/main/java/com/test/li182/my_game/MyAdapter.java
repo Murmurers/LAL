@@ -4,10 +4,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by li182 on 2018/1/20.
@@ -15,12 +17,11 @@ import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
 
-    private ArrayList<Player> mData;
+    private List<Player> mData;
 
-    public MyAdapter(ArrayList<Player> data) {
+    public MyAdapter(List<Player> data) {
         this.mData = data;
     }
-
 
 
 
@@ -36,8 +37,34 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         // 绑定数据
-        holder.TvU.setText(mData.get(position).getName());
-        holder.TvS.setText(""+mData.get(position).getScore());
+        Player player = mData.get(position);
+        if (player.getName()!=null){
+            holder.tvUser.setText(player.getName());
+        }
+        if (player.getTouID()>=0){
+            switch (player.getTouID())
+            {
+                case 0:holder.iv.setBackgroundResource(R.drawable.tou0);break;
+                case 1:holder.iv.setBackgroundResource(R.drawable.tou1);break;
+                case 2:holder.iv.setBackgroundResource(R.drawable.tou2);break;
+                case 3:holder.iv.setBackgroundResource(R.drawable.tou3);break;
+                case 4:holder.iv.setBackgroundResource(R.drawable.tou4);break;
+                case 5:holder.iv.setBackgroundResource(R.drawable.tou5);break;
+                case 6:holder.iv.setBackgroundResource(R.drawable.tou6);break;
+                case 7:holder.iv.setBackgroundResource(R.drawable.tou7);break;
+                case 8:holder.iv.setBackgroundResource(R.drawable.tou8);break;
+                case 9:holder.iv.setBackgroundResource(R.drawable.tou9);break;
+                case 10:holder.iv.setBackgroundResource(R.drawable.tou10);break;
+                case 11:holder.iv.setBackgroundResource(R.drawable.tou11);break;
+                case 12:holder.iv.setBackgroundResource(R.drawable.tou12);break;
+            }
+        }
+        if (player.getScore()>=0){
+            holder.tvScore.setText(""+player.getScore());
+        }
+        if (player.ready){
+            holder.tvState.setText("准备");
+        }
     }
 
     @Override
@@ -47,14 +74,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView TvU;
-        TextView TvS;
-        TextView TvR;
+        TextView tvUser;
+        ImageView iv;
+        TextView tvScore;
+        TextView tvState;
         public ViewHolder(View itemView) {
             super(itemView);
-            TvU = (TextView) itemView.findViewById(R.id.item_user);
-            TvS = (TextView) itemView.findViewById(R.id.item_score);
-            TvS = (TextView) itemView.findViewById(R.id.item_state);
+            iv = (ImageView) itemView.findViewById(R.id.img);
+            tvUser = (TextView) itemView.findViewById(R.id.item_user);
+            tvScore = (TextView) itemView.findViewById(R.id.item_score);
+            tvState = (TextView) itemView.findViewById(R.id.item_state);
         }
     }
 }
