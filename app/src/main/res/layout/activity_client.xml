@@ -23,12 +23,12 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
                 android:layout_marginTop="70dp"
-                >
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
 
                 <ImageView
@@ -54,23 +54,29 @@
                     android:textSize="30dp" />
             </LinearLayout>
 
-            <Button
-                android:id="@+id/button_conn"
-                android:layout_width="300dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="100dp"
-                android:text="连接服务器" />
+                android:layout_below="@id/user"
+                android:layout_marginTop="100dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/button_client"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignStart="@+id/button_conn"
-                android:layout_marginBottom="36dp"
-                android:text="加入房间" />
+
+                <Button
+                    android:id="@+id/button_conn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/connect" />
+
+
+                <Button
+                    android:id="@+id/button_client"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/join_game" />
+            </LinearLayout>
         </RelativeLayout>
 
     </FrameLayout>

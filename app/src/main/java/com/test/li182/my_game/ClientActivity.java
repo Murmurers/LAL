@@ -20,6 +20,8 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -66,6 +68,8 @@ public class ClientActivity extends AppCompatActivity {
     private long lastUpdateTime;  // 上次检测时间
 
     private  boolean receving;
+    private int buttonState = 1;  //1:加入房间  2.准备 3.传输中
+    private boolean prepare = false;
 
     @SuppressLint("HandlerLeak")
     Handler handler = new Handler(){
@@ -73,7 +77,8 @@ public class ClientActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case MSG_START_TRANS:
-                    func_button.setText("传输中");
+                    buttonState = 3;
+                    func_button.setBackgroundResource(R.drawable.sending);
                     func_button.setClickable(false);
                     break;
 
@@ -88,7 +93,8 @@ public class ClientActivity extends AppCompatActivity {
 
                 case MSG_RESULT:
                     String info = (String) msg.obj;
-                    func_button.setText("加入房间");
+                    buttonState = 1;
+                    func_button.setBackgroundResource(R.drawable.join_game);
                     func_button.setClickable(true);
                     if (info.substring(1).equals("win")){
                         alertText(ClientActivity.this,"恭喜","大吉大利，今晚吃鸡！");
@@ -97,6 +103,7 @@ public class ClientActivity extends AppCompatActivity {
                         alertText(ClientActivity.this,"很遗憾","下次努力！");
                     }
 
+                    prepare = false;
                     receving =false;
                     closeSocket();
 
@@ -111,6 +118,8 @@ public class ClientActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//隐藏标题栏
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);//隐藏状态栏
         setContentView(R.layout.activity_client);
 
         func_button = findViewById(R.id.button_client);
@@ -131,15 +140,18 @@ public class ClientActivity extends AppCompatActivity {
         func_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (func_button.getText().toString().equals("加入房间")){
-                    func_button.setText("准备");
+                if (buttonState == 1){
+                    buttonState = 2;
+                    func_button.setBackgroundResource(R.drawable.ready);
                     sendmessage(IP, "A"+name+":"+touID);
                 }
-                else if (func_button.getText().toString().equals("准备")){
-                    sendmessage(IP, "P"+name);
+                else if (buttonState == 2){
+                    if(!prepare){
+                        sendmessage(IP, "P"+name);
+                        receivingMsg();
+                        prepare = true;
+                    }
 
-                    receivingMsg();
-                    //startReceving();
                 }
             }
         });
@@ -220,49 +232,6 @@ public class ClientActivity extends AppCompatActivity {
         new Thread(runnable).start();
     }
 
-    private void startReceving() {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    serverSocket = new ServerSocket(PORT);
-                    socket = serverSocket.accept();
-                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    String data = in.readLine();
-                    in.close();
-                    if (data != null) {
-                        if (data.equals("start")) {
-                            Message msg1 = new Message();
-                            msg1.what = MSG_START_TRANS;
-                            handler.sendMessage(msg1);
-                            sum = 0;
-
-                            Message msg2 = new Message();
-                            msg2.what = MSG_UPDATE_SCORE;
-                            handler.sendMessage(msg2);
-
-                            for (int i = 0; i < 10; i++) {
-                                sendmessage(IP, "T"+name+":"+sum);
-                                Thread.sleep(1000);
-                            }
-                            sendmessage(IP, "E"+name);
-                            Message msg3 = new Message();
-                            msg3.what = MSG_END_TRANS;
-                            handler.sendMessage(msg3);
-                            socket.close();
-                            serverSocket.close();
-                        }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        };
-        new Thread(runnable).start();
-    }
 
     private void receivingMsg(){
         Runnable runnable = new Runnable() {
@@ -284,13 +253,18 @@ public class ClientActivity extends AppCompatActivity {
                                 handler.sendMessage(msg1);
                                 sum = 0;
                                 for (int i = 0; i < 10; i++) {
-                                    sendmessage(IP, "T"+name+":" + sum);
+                                    long temp = sum;
+                                    Message msg2 = new Message();
+                                    msg2.what = MSG_UPDATE_SCORE;
+                                    msg2.obj = temp;
+                                    handler.sendMessage(msg2);
+                                    sendmessage(IP, "T"+name+":" + temp);
                                     Thread.sleep(1000);
                                 }
                                 sendmessage(IP, "E"+name);
-                                Message msg2 = new Message();
-                                msg2.what = MSG_END_TRANS;
-                                handler.sendMessage(msg2);
+                                Message msg3 = new Message();
+                                msg3.what = MSG_END_TRANS;
+                                handler.sendMessage(msg3);
                             }
                             if (data.matches("R.*")){
                                 Message resultMsg = new Message();

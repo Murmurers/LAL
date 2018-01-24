@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import java.io.BufferedReader;
@@ -41,6 +43,7 @@ public class ServerActivity extends AppCompatActivity {
     private Button getip_button;
 
     private boolean receving;
+    private int buttonState = 1;  //1:创建房间  2.等待玩家进入 3.开始 4.传输中
 
     private final int PORT = 8899;
     Socket socket;
@@ -52,6 +55,7 @@ public class ServerActivity extends AppCompatActivity {
     public RecyclerView mRecyclerView;
     public RecyclerView.Adapter mAdapter;
     public RecyclerView.LayoutManager mLayoutManager;
+
 
     @SuppressLint("HandlerLeak")
     Handler handler = new Handler(){
@@ -75,6 +79,21 @@ public class ServerActivity extends AppCompatActivity {
                         }
                     }
                     mAdapter.notifyDataSetChanged();
+
+                    boolean isReady = true;
+                    iterator = players.iterator();
+                    while (iterator.hasNext()){
+                        Player p = iterator.next();
+                        if (!p.isReady()){
+                            isReady = false;
+                            break;
+                        }
+                    }
+                    if (isReady){
+                        buttonState = 3;
+                        func_button.setBackgroundResource(R.drawable.start);
+                        func_button.setClickable(true);
+                    }
                     break;
                 case MSG_TRANSFORM:
                     String[] str = info.substring(1).split(":");
@@ -109,7 +128,9 @@ public class ServerActivity extends AppCompatActivity {
                         returnMessage();
                         receving = false;
                         closeSocket();
-                        func_button.setText("创建房间");
+                        buttonState = 1;
+                        func_button.setBackgroundResource(R.drawable.creat_room);
+                        func_button.setClickable(true);
                         clientAddress.clear();
                         players.clear();
                     }
@@ -124,6 +145,8 @@ public class ServerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//隐藏标题栏
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);//隐藏状态栏
         setContentView(R.layout.activity_server);
 
         func_button = findViewById(R.id.button_server);
@@ -140,12 +163,17 @@ public class ServerActivity extends AppCompatActivity {
         func_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (func_button.getText().toString().equals("创建房间")){
+                if (buttonState == 1){
                     initView();
-                    func_button.setText("开始");
+                    buttonState = 2;
+                    func_button.setBackgroundResource(R.drawable.waiting);
+                    func_button.setClickable(false);
                     startReceving();
                 }
-                else if (func_button.getText().toString().equals("开始"));{
+                else if (buttonState == 3){
+                    buttonState = 4;
+                    func_button.setBackgroundResource(R.drawable.sending);
+                    func_button.setClickable(false);
                     for(String addr : clientAddress){
                         sendmessage(addr,"start");
                     }

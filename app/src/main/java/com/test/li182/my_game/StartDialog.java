@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -36,7 +37,7 @@ public class StartDialog extends Dialog {
 
         public DownTimer() {
             // 设置时间5秒
-            super(8000, 1000);
+            super(7000, 1000);
         }
         // 重写CountDownTimer的两个方法
         @Override
