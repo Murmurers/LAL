@@ -26,14 +26,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:gravity="center_horizontal"
                 android:layout_marginTop="100dp"
                 android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal">
 
                     <TextView
                         android:id="@+id/tv_a"
@@ -42,14 +37,6 @@
                         android:layout_weight="1"
                         android:background="@color/crimson"
                         android:textAlignment="center" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal">
-
                     <TextView
                         android:id="@+id/tv_b"
                         android:layout_width="wrap_content"
@@ -57,9 +44,6 @@
                         android:layout_weight="1"
                         android:background="@color/blueviolet"
                         android:textAlignment="center" />
-                </LinearLayout>
-
-
             </LinearLayout>
 
             <LinearLayout

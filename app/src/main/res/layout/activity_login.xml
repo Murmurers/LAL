@@ -75,7 +75,9 @@
                             android:inputType="textEmailAddress"
                             android:maxLines="1"
                             android:singleLine="true"
-                            android:text="157512926@qq.com" />
+                            android:text="157512926@qq.com"
+                            android:textColor="@color/white"
+                            />
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -94,7 +96,9 @@
                             android:inputType="text"
                             android:maxLines="1"
                             android:singleLine="true"
-                            android:text="诺责" />
+                            android:text="诺责"
+                            android:textColor="@color/white"
+                            />
 
                     </android.support.design.widget.TextInputLayout>
 
